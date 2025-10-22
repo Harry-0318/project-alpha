@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Alpha - The Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===========================================
+           RESET & BASE STYLES
+        =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+        =========================================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 1px;
+        }
+
+        .manifesto-text {
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 1.5px;
+        }
+
+        /* ===========================================
+           ANIMATED BACKGROUND
+        =========================================== */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background: linear-gradient(45deg, #ff1a1a, #00ff00, #ff1a1a, #00ff00);
+            background-size: 400% 400%;
+            animation: gradientShift 30s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===========================================
+           CUSTOM CURSOR
+        =========================================== */
+        .custom-cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #ff1a1a;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px #ff1a1a;
+        }
+
+        .custom-cursor.hover {
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border: 2px solid #ff1a1a;
+            box-shadow: 0 0 20px #ff1a1a;
+        }
+
+        /* ===========================================
+           HERO SECTION
+        =========================================== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 26, 26, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 3rem;
+            background: #ff1a1a;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 26, 26, 0.4), 0 0 30px rgba(255, 26, 26, 0.2);
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:active {
+            transform: scale(0.98);
+        }
+
+        /* ===========================================
+           SUBDOMAIN GATEWAY SECTION
+        =========================================== */
+        .gateway {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .subdomain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .subdomain-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subdomain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #2a2a2a;
+            transition: all 0.3s ease;
+        }
+
+        .subdomain-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 26, 26, 0.1);
+            border-color: #ff1a1a;
+        }
+
+        .subdomain-card:hover::before {
+            background: #ff1a1a;
+            box-shadow: 0 0 10px #ff1a1a;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff1a1a;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .card-description {
+            color: #cccccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .card-tag {
+            display: inline-block;
+            background: rgba(255, 26, 26, 0.1);
+            color: #ff1a1a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 26, 26, 0.2);
+        }
+
+        /* ===========================================
+           FEED SECTION
+        =========================================== */
+        .feed {
+            padding: 5rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feed-items {
+            margin-top: 3rem;
+        }
+
+        .feed-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+
+        .feed-item:hover {
+            background: rgba(255, 26, 26, 0.02);
+            padding-left: 1rem;
+        }
+
+        .feed-date {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #888888;
+            min-width: 120px;
+            font-size: 0.9rem;
+        }
+
+        .feed-content {
+            flex: 1;
+            margin: 0 2rem;
+        }
+
+        .feed-title {
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .feed-tag {
+            display: inline-block;
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        /* ===========================================
+           FOOTER
+        =========================================== */
+        .footer {
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 5rem;
+        }
+
+        .footer-text {
+            color: #888888;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ===========================================
+           RESPONSIVE DESIGN
+        =========================================== */
+        @media (max-width: 768px) {
+            .hero {
+                height: 100vh;
+                padding: 0 1rem;
+            }
+
+            .manifesto-text {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .gateway, .feed {
+                padding: 3rem 1rem;
+            }
+
+            .subdomain-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .subdomain-card {
+                padding: 1.5rem;
+            }
+
+            .feed-item {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .feed-date {
+                min-width: auto;
+                margin-bottom: 0.5rem;
+            }
+
+            .feed-content {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manifesto-text {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .subdomain-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) {
+            .custom-cursor {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <h1 class="manifesto-text">Testing, building, breaking, mastering — everything I can't show anywhere else.</h1>
+        <a href="#gateway" class="cta-button">Enter the Labs</a>
+    </section>
+
+    <!-- Subdomain Gateway Section -->
+    <section class="gateway" id="gateway">
+        <h2 class="section-title">ACCESS POINTS</h2>
+        <div class="subdomain-grid">
+            <a href="https://labs.projectalpha.in" class="subdomain-card" target="_blank">
+                <div class="card-icon">L</div>
+                <h3 class="card-title">Labs</h3>
+                <p class="card-description">Live experiments, prototypes, and technical sandbox</p>
+                <span class="card-tag">EXPERIMENTAL</span>
+            </a>
+            
+            <a href="https://media.projectalpha.in" class="subdomain-card" target="_blank">
+                <div class="card-icon">M</div>
+                <h3 class="card-title">Media</h3>
+                <p class="card-description">Visual projects, design work, and creative experiments</p>
+                <span class="card-tag">CREATIVE</span>
+            </a>
+            
+            <a href="https://play.projectalpha.in" class="subdomain-card" target="_blank">
+                <div class="card-icon">P</div>
+                <h3 class="card-title">Play</h3>
+                <p class="card-description">Interactive demos, games, and experimental interfaces</p>
+                <span class="card-tag">INTERACTIVE</span>
+            </a>
+            
+            <a href="https://vault.projectalpha.in" class="subdomain-card" target="_blank">
+                <div class="card-icon">V</div>
+                <h3 class="card-title">Vault</h3>
+                <p class="card-description">Archives, research notes, and deep dives</p>
+                <span class="card-tag">ARCHIVE</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Feed/Log Section -->
+    <section class="feed" id="feed">
+        <h2 class="section-title">LATEST BUILDS</h2>
+        <div class="feed-items">
+            <div class="feed-item">
+                <div class="feed-date">2025.10.20</div>
+                <div class="feed-content">
+                    <div class="feed-title">Neural style transfer experiment</div>
+                </div>
+                <span class="feed-tag">PROTOTYPE</span>
+            </div>
+            
+            <div class="feed-item">
+                <div class="feed-date">2025.10.15</div>
+                <div class="feed-content">
+                    <div class="feed-title">Minimal task orchestration framework</div>
+                </div>
+                <span class="feed-tag">LIVE</span>
+            </div>
+            
+            <div class="feed-item">
+                <div class="feed-date">2025.10.08</div>
+                <div class="feed-content">
+                    <div class="feed-title">Interactive sound visualization</div>
+                </div>
+                <span class="feed-tag">ARCHIVE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2025 Project Alpha. Built in the dark.</p>
+    </footer>
+
+    <script>
+        // ===========================================
+        // CUSTOM CURSOR FUNCTIONALITY
+        // ===========================================
+        const cursor = document.querySelector('.custom-cursor');
+        const interactiveElements = document.querySelectorAll('a, button, .subdomain-card');
+
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Handle hover states
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // ===========================================
+        // SMOOTH SCROLL ENHANCEMENT
+        // ===========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ===========================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // ===========================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for entrance animations
+        document.querySelectorAll('.subdomain-card, .feed-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // ===========================================
+        // BUTTON CLICK EFFECTS
+        // ===========================================
+        document.querySelectorAll('.cta-button, .subdomain-card').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.1)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===========================================
+        // PERFORMANCE OPTIMIZATION
+        // ===========================================
+        // Throttle cursor movement for better performance
+        let ticking = false;
+        
+        function updateCursor(e) {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            ticking = false;
+        }
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!ticking) {
+                requestAnimationFrame(() => updateCursor(e));
+                ticking = true;
+            }
+        });
+
+        // ===========================================
+        // KEYBOARD NAVIGATION SUPPORT
+        // ===========================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.classList.contains('subdomain-card')) {
+                e.target.click();
+            }
+        });
+
+        // Add focus styles for keyboard navigation
+        document.querySelectorAll('.subdomain-card').forEach(card => {
+            card.setAttribute('tabindex', '0');
+        });
+
+        console.log('🔥 Project Alpha Hub loaded successfully');
+        console.log('Built with precision in the dark.');
+    </script>
+</body>
+</html>
